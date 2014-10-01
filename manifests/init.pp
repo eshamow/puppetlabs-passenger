@@ -51,21 +51,6 @@ class passenger (
 ) inherits passenger::params {
 
   # logic to work around params.pp string interpolation issues
-  case $::architecture {
-    'i386': {
-      $libpath = 'lib'
-    }
-    'x86_64', 'amd64': {
-      if $::operatingsystemmajrelease == '5' {
-        $libpath = 'lib'
-      } else {
-        $libpath = 'lib64'
-      }
-    }
-    default: {
-      fail("Architecture ${::architecture} is unsupported by the passenger module.")
-    }
-  }
   case $::osfamily {
     'debian': {
       case $::operatingsystemmajrelease {
@@ -86,7 +71,7 @@ class passenger (
     'redhat': {
       case $::operatingsystemmajrelease {
         '5', '6': {
-          $passenger_root         = "/usr/${libpath}/ruby/gems/1.8/gems/passenger-${passenger_version}"
+          $passenger_root         = "/usr/lib/ruby/gems/1.8/gems/passenger-${passenger_version}"
           $mod_passenger_location = "${passenger_root}/buildout/apache2/mod_passenger.so"
         }
         '7': {
