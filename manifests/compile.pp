@@ -1,3 +1,4 @@
+#
 class passenger::compile {
 
   exec {'compile-passenger':

@@ -1,3 +1,4 @@
+#
 class passenger::install {
 
   package { 'passenger':
