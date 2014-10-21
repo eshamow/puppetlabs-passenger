@@ -70,8 +70,23 @@ class passenger (
     }
     'redhat': {
       case $::operatingsystemmajrelease {
-        '5', '6': {
+        '5': {
           $passenger_root         = "/usr/lib/ruby/gems/1.8/gems/passenger-${passenger_version}"
+          $mod_passenger_location = "${passenger_root}/buildout/apache2/mod_passenger.so"
+        }
+        '6': {
+          case $::architecture {
+            'i386': {
+              $lib_root = '/usr/lib/'
+            }
+            'x86_64': {
+              $lib_root = '/usr/lib64/'
+            }
+            default: {
+              fail("Architecture ${::architecture} not supported for ${::osfamily} ${::operatingsystemmajrelease}")
+            }
+          }
+          $passenger_root = "${lib_root}/ruby/gems/1.8/gems/passenger-${passenger_version}"
           $mod_passenger_location = "${passenger_root}/buildout/apache2/mod_passenger.so"
         }
         '7': {
